@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+      <% include partials/head %>
+  </head>
+  <body class="container">
+
+    <div class="col-md-6 col-md-offset-3">
+      <h1>Bonjour! <%= name %></h1>
+      <button class="btn btn-success" id="show-metrics">
+        Metrics
+      </button>
+      <button class="btn btn-danger" href="/logout" onClick='document.location.href="/logout"'>
+        Logout
+      </button>
+      <div id="metrics"></div>
+    </div>
+
+    <script>
+      $('#show-metrics').click((e) => {
+        e.preventDefault();
+        $.getJSON("/metrics/<%= name %>", {}, (data) => {
+          const content = data.map(d => {
+            return 'timestamp: '+d.timestamp+', value: '+d.value+'';
+          })
+          $('#metrics').append(content.join("\n"));
+        });
+      })
+    </script>
+
+  </body>
+</html>
